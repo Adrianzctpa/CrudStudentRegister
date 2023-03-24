@@ -1,19 +1,17 @@
 package com.example.crudstudentregister
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.crudstudentregister.databinding.ListItemBinding
 import com.example.crudstudentregister.db.Student
 
 class StudentRecyclerViewAdapter(private val clickListener: (Student) -> Unit): RecyclerView.Adapter<StudentViewHolder>() {
     private val studentList = ArrayList<Student>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val listItem = layoutInflater.inflate(R.layout.list_item, parent, false)
-        return StudentViewHolder(listItem)
+        val binding = ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return StudentViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
@@ -30,14 +28,14 @@ class StudentRecyclerViewAdapter(private val clickListener: (Student) -> Unit): 
     }
 }
 
-class StudentViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
+class StudentViewHolder(private val binding : ListItemBinding): RecyclerView.ViewHolder(binding.root) {
     fun bind(student: Student, clickListener: (Student) -> Unit) {
-        val nameView = view.findViewById<TextView>(R.id.tvName)
-        val emailView = view.findViewById<TextView>(R.id.tvEmail)
-        nameView.text = student.name
-        emailView.text = student.email
-        view.setOnClickListener {
-            clickListener(student)
+        binding.apply {
+            tvName.text = student.name
+            tvEmail.text = student.email
+            root.setOnClickListener {
+                clickListener(student)
+            }
         }
     }
 }
